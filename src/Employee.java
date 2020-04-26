@@ -1,90 +1,82 @@
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
-public class Employee extends Person {
-
-
-    public static int number = 0;
-    public static int getNumber()
-    {
-        return number;
-    }
-    public void setNumber(int n)
-    {
-        n = number;
-
-    }
-
-    private final String temp="rose";
-    private String name;
-    private int salary;
-    private LocalDate hireDate;
-    public Employee(String n,int s,int year,int month,int day)
-    {
-        super(n);
-        salary = s;
-        hireDate = LocalDate.of(year,month,day);
-
-    }
-
-    public void getDescription()
-    {
-        System.out.println("I am an employee");
-    }
-
-    public int raiseSalary()
-    {
-        salary+=this.salary*5/100;
-        return salary;
-    }
+public class Employee implements Comparable<Employee>,Cloneable{
+   private String name;
+   private double salary;
+   private Date hireday;
 
 
-    public String getName() {
-        return name;
-    }
+   public Employee(String name,double salary,int year,int month, int day)
+   {
+      this.name = name;
+      this.salary = salary;
+      hireday = new Date();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   }
+   @Override
+   public int compareTo(Employee o) {
+      return Double.compare(salary,o.salary);
+   }
 
-    public int getSalary() {
-        return salary;
-    }
+   public String getName() {
+      return name;
+   }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
+   public void setName(String name) {
+      this.name = name;
+   }
 
-    public LocalDate getHireDate()
-    {
-        return hireDate;
-    }
-    public void setHireDate(LocalDate hireDate) {
-        this.hireDate = hireDate;
-    }
+   public double getSalary() {
+      return salary;
+   }
 
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        //Chapter3_1.balance();
-        //Chapter3_2.CaseEnum();
-        //Chapter3_3.BigInteger();
-        //Chapter3_4.arrays();
-        //Chapter3_5.lottery();
-        //Chapter4_2.canlendarTest();
-        Employee[] employees = new Employee[3];
-        employees[0]=new Employee("jack1",1000,1988,11,24);
-        employees[1]=new Employee("rose",2000,1989,12,24);
-        employees[2]=new Employee("xbb",3000,1988,10,24);
-        for (Employee a:employees
-        ) {
-            Employee.number++;
-            a.setNumber(Employee.number);
-            System.out.println(a.getName()+","+a.getSalary()+","+a.getHireDate().getYear()+","+a.getHireDate().getMonth()+","+a.getHireDate().getDayOfMonth());
+   public void setSalary(double salary) {
+      this.salary = salary;
+   }
 
-        }
-        System.out.println(Employee.getNumber());
-        System.out.println();
+   public Date getHireday() {
+      return hireday;
+   }
+
+   public void setHireday(int year,int month, int day) {
+      this.hireday = new GregorianCalendar(year,month -1,day).getTime();
+      //Date newHireDay = new GregorianCalendar(year, month - 1, day).getTime();
+      //hireday.setTime(newHireDay.getTime());
+   }
 
 
-    }
+   public Employee clone()
+   {
+      try {
+         Employee a = (Employee) super.clone();
+         //a.hireday = (Date) this.hireday.clone();
+         return a;
+      } catch (CloneNotSupportedException e) {
+         e.printStackTrace();
+         Employee o = null;
+         return o;
+      }
 
+   }
+
+   public static void main(String [] args)
+   {
+      Employee[] employees = new Employee[2];
+      employees[0] = new Employee("ROSE",501,1933,12,2);
+      employees[1] = employees[0].clone();
+      //employees[1] = employees[0];
+      employees[1].setSalary(1000);
+      employees[1].setHireday(1988,11,24);
+      for (Employee a:employees
+      ) {
+         System.out.println(a.getName()+","+a.getSalary()+","+a.getHireday());
+      }
+
+   }
 }
